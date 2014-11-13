@@ -1,6 +1,6 @@
 
 module basic_data_structures
-  class Node
+  class Tree
   	#Build a class Node. It should have a value that 
   	#it stores and also links to its parent and 
   	#children (if they exist). Build getters and 

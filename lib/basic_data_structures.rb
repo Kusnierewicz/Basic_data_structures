@@ -1,5 +1,15 @@
-require "basic_data_structures/version"
+require_require "basic_data_structures/version.rb"
+require_require "basic_data_structures/node.rb"
 
 module BasicDataStructures
-  # Your code goes here...
+
+  class Tree
+  	
+
+  	def initialize
+  	  
+  	end
+
+  end
+
 end
