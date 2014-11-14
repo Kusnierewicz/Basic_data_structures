@@ -11,6 +11,9 @@ module BasicDataStructures
   	end
 
   	def build_tree(arr)
+      active_parent = 0 #number of active parent to be possible of set_parent in child
+
+
 	  noodroot = BasicDataStructures::Node.new(3)
 	  nood2 = BasicDataStructures::Node.new(5)
 	  #Write a method build_tree which takes an array of data 
@@ -18,10 +21,14 @@ module BasicDataStructures
 	  #and turns it into a binary tree full of Node objects 
 	  #appropriately placed. Start by assuming the array you 
 	  #get is sorted.
-	  nood2.leftchild = ""
+	  noodroot.set_root
+	  nood2.set_parent(noodroot)
+	  noodroot.set_child(nood2)
 	  @branch = [noodroot, nood2]
 	  @branch
 	end
+
+
 
 	def build_tree_2(arr)
 	  #Now refactor your build_tree to handle data that isn't 
