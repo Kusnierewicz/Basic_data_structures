@@ -4,31 +4,53 @@ require_relative "basic_data_structures/node.rb"
 module BasicDataStructures
 
   class Tree
-  	
 
   	def initialize(name)
   	  @name = name
   	end
 
   	def build_tree(arr)
-      active_parent = 0 #number of active parent to be possible of set_parent in child
+  	  @branch = []
 
-
-	  noodroot = BasicDataStructures::Node.new(3)
-	  nood2 = BasicDataStructures::Node.new(5)
-	  #Write a method build_tree which takes an array of data 
-	  #(e.g. [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]) 
-	  #and turns it into a binary tree full of Node objects 
-	  #appropriately placed. Start by assuming the array you 
-	  #get is sorted.
-	  noodroot.set_root
-	  nood2.set_parent(noodroot)
-	  noodroot.set_child(nood2)
-	  @branch = [noodroot, nood2]
-	  @branch
+  	  arr.each_with_index do |element, index|
+  	  	if @branch.empty? 
+  	  	  @noderoot = BasicDataStructures::Node.new(element)
+  	  	  @noderoot.set_root
+  	  	  @noderoot.id = @noderoot.object_id
+  	  	  @branch << @noderoot
+  	  	else
+  	  	  @branch << instance_variable_set("@node#{index}", BasicDataStructures::Node.new(element))
+  	  	  @branch.last.id = @branch.last.object_id
+  	  	  add_to_tree(@branch.last, @noderoot)
+  	  	end
+  	  end
 	end
 
+	def add_to_tree(new_node, parent_node)
+	  if new_node.value >= parent_node.value
+  	  	if parent_node.rightchild == nil
+  	  	  parent_node.set_child(new_node)
+  	  	  new_node.set_parent(parent_node)
+  	  	else
+  	  	  add_to_tree(new_node, select_node(parent_node.rightchild))
+  	  	end
+  	  elsif new_node.value < parent_node.value
+  	  	if parent_node.leftchild == nil
+  	  	  parent_node.set_child(new_node)
+  	  	  new_node.set_parent(parent_node)
+  	  	else
+  	  	  add_to_tree(new_node, select_node(parent_node.leftchild))
+  	  	end
+  	  end
+	end
 
+	def select_node(n_value)
+	  @branch.each_with_index do |element, index|
+	  	if element.id == n_value
+	  	  return element
+	  	end
+	  end
+	end
 
 	def build_tree_2(arr)
 	  #Now refactor your build_tree to handle data that isn't 
@@ -75,7 +97,11 @@ module BasicDataStructures
 	end
 
 	def read_tree
-	  print @branch.inspect
+	  @branch.each do |element|
+	  	puts element.inspect
+	  end
+	  #@branch.size
+	  #ObjectSpace._id2ref(@branch[1].object_id)
 	end
 
   end
@@ -85,5 +111,14 @@ end
 
 tree = BasicDataStructures::Tree.new("test")
 
-tree.build_tree([1])
+#tree.build_tree([4,3,5,2,2,1,1,24,33,17,13])
+tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+puts " "
+print "----------------reading tree----------------------"
+puts " "
+puts " "
 tree.read_tree
+puts " "
+print "----------------stop reading tree-----------------"
+puts " "
+

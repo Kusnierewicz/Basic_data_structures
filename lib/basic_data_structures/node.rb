@@ -5,9 +5,10 @@ module BasicDataStructures
   	#it stores and also links to its parent and 
   	#children (if they exist). Build getters and 
   	#setters for it (e.g. parent node, child node(s)).
-  	attr_accessor :value, :leftchild, :rightchild, :rootnode, :parent
+  	attr_accessor :id, :value, :leftchild, :rightchild, :rootnode, :parent
 
   	def initialize(value)
+  	  @id = nil
   	  @value = value
   	  @leftchild = nil
   	  @rightchild = nil
@@ -16,12 +17,16 @@ module BasicDataStructures
   	end
 
   	def set_parent(parent)
-	  self.parent = parent.value
+  	  #puts "parent value = #{parent.value}"
+	  self.parent = parent.id
 	  #set higher node as parent
 	end
 
 	def set_child(child)
-      self.value > child.value ? self.leftchild = child.value : self.rightchild = child.value
+	  #puts "self value = #{self.value}"
+	  #puts "child value = #{child.value}"
+      self.value > child.value ? self.leftchild = child.id : self.rightchild = child.id
+      return
 	end
 
 	def set_root
