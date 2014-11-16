@@ -52,16 +52,8 @@ module BasicDataStructures
 	  end
 	end
 
-	def build_tree_2(arr)
-	  #Now refactor your build_tree to handle data that isn't 
-	  #presorted and cannot be easily sorted prior to building 
-	  #the tree. You'll need to figure out how to add a node for 
-	  #each of the possible cases (e.g. if it's a leaf versus in 
-	  #the middle somewhere).
-
-	end
-
 	def breadth_first_search(target)
+	  queue = [] #add to the "back" and remove from the "front"!
 	  #Build a method breadth_first_search which takes a target 
 	  #value and returns the node at which it is located using 
 	  #the breadth first search technique. Tip: You will want to 
@@ -72,7 +64,27 @@ module BasicDataStructures
 
 	end
 
-	def depth_first_search(target)
+	def depth_first_search(target, node, stack = [], checked = [])
+	  stack << node #add to the top and remove from the top!
+	  result = nil
+	  while stack.empty? != true
+	  	if stack.last.value == target
+	  	  result = stack.last
+	  	  stack.clear
+	  	else
+	  	  if stack.last.leftchild == nil || checked.include?(stack.last.leftchild) 
+	  	  	#if checked.include?(stack.last.leftchild) == false
+	  	    depth_first_search(target, stack.last.leftchild, stack, checked)
+	  	    end
+	  	  elsif stack.last.rightchild == nil || checked.include?(stack.last.rightchild) == false
+	  	  	#if checked.include?(stack.last.rightchild) == false
+	  	  	depth_first_search(terget, stack.last.rightchild, stack, checked)
+	  	  else
+	  	end
+	  	result
+	  end
+	  
+
 	  #Build a method depth_first_search which returns the node 
 	  #at which the target value is located using the depth first 
 	  #search technique. Use an array acting as a stack to do this.
@@ -100,8 +112,6 @@ module BasicDataStructures
 	  @branch.each do |element|
 	  	puts element.inspect
 	  end
-	  #@branch.size
-	  #ObjectSpace._id2ref(@branch[1].object_id)
 	end
 
   end
@@ -112,13 +122,15 @@ end
 tree = BasicDataStructures::Tree.new("test")
 
 #tree.build_tree([4,3,5,2,2,1,1,24,33,17,13])
-tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+#tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+tree.build_tree([1])
 puts " "
 print "----------------reading tree----------------------"
 puts " "
 puts " "
-tree.read_tree
+#tree.read_tree
 puts " "
 print "----------------stop reading tree-----------------"
 puts " "
+tree.depth_first_search(1)
 
