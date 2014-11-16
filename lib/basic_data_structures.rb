@@ -66,16 +66,24 @@ module BasicDataStructures
 
 	def depth_first_search(target, node, stack = [], checked = [])
 	  stack << node #add to the top and remove from the top!
+	  left = true
+	  right = true
 	  result = nil
+	  checked << stack.last
 	  while stack.empty? != true
 	  	if stack.last.value == target
 	  	  result = stack.last
 	  	  stack.clear
+	  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
+	  	  left = false
+	  	  right = false
 	  	else
-	  	  if stack.last.leftchild == nil || checked.include?(stack.last.leftchild) 
-	  	  	#if checked.include?(stack.last.leftchild) == false
-	  	    depth_first_search(target, stack.last.leftchild, stack, checked)
-	  	    end
+	  	  if stack.last.leftchild == nil || checked.include?(stack.last.leftchild)
+	  	  	left = false
+	  	  else
+	  	  	depth_first_search(target, stack.last.leftchild, stack, checked)
+	  	  end
+	  	  
 	  	  elsif stack.last.rightchild == nil || checked.include?(stack.last.rightchild) == false
 	  	  	#if checked.include?(stack.last.rightchild) == false
 	  	  	depth_first_search(terget, stack.last.rightchild, stack, checked)
