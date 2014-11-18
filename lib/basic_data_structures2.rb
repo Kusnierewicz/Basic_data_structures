@@ -102,69 +102,151 @@ module BasicDataStructures
 
 	end
 =end
-	def depth_first_search(target, node, stack = [], checked = ["test"])
-	  result = nil
-	    while stack.empty? != true 
-	     #add to the top and remove from the top!
-		puts "stack = #{stack}"
-		puts " "
-		print "----------------1 tree----------------------"
-		puts " "
-		
-		puts "node = #{node.id}"
-		puts " "
-		print "----------------2 tree----------------------"
-		puts " "
+	def depth_first_search(target, node, stack = [], checked = [])
+		puts "#{node} - zaczynam kod"
+	   #add to the top and remove from the top!
 
-		puts "checked = #{checked}"
-		puts " "
-		print "----------------3 tree----------------------"
-		puts " "  
-
+	    unless stack.empty? && checked.empty? == false
 	      if checked.include?(node)
-	      	puts "node jest w #{checked}"
+	      	puts "#{node} juz byl sprawdzany"
+
 
 			if stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
+				puts "jest lewe jadro i nie bylo sprawdzane"
 		  	  depth_first_search(target, select_node(stack.last.leftchild), stack, checked)
 
 		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
+		  		puts "jest prawe jadro i nie bylo sprawdzane"
 		  	  depth_first_search(target, select_node(stack.last.rightchild), stack, checked)
 
 		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
+		  		puts "na lewo i na prawo pusto"
 		  	  stack.pop
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
 
 		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
+		  		puts "dzieci sprawdzone po obu stronach"
 		  	  stack.pop
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+
 		  	end
 
 	      else
-	      	puts "node nie jest w #{checked}"
+	      	puts "#{node} nie byl sprawdzany"
 	      	stack << node
-	      	puts stack.inspect
-	      	checked << stack.last
+	      	puts "STACK = #{stack}"
+	      	checked << stack.last.id
+	      	puts "CHECKED = #{checked}"
 			if stack.last.value == target
+				puts "!!!!!!!!!!!!!!!!!!!!wow #{stack.last.value} to szukana wartosc!"
 			  result = stack.last
 
 			elsif stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
+		  	  puts "jest lewe jadro i nie bylo sprawdzane"
 		  	  depth_first_search(target, select_node(stack.last.leftchild), stack, checked)
 
+
 		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
+		  		puts "jest prawe jadro i nie bylo sprawdzane"
 		  	  depth_first_search(target, select_node(stack.last.rightchild), stack, checked)
 
 		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
+		  		puts "na lewo i na prawo pusto"
 		  	  stack.pop
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
 
 		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
+		  		puts "dzieci sprawdzone po obu stronach"
 		  	  stack.pop
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
 
 		  	end
 		  end
 		end
-		result.class
+		puts "WYNIK!!!!!!!!!!!!!!!!!!!!"
+		result
+		
+	end
+
+	def depth_first_search2(target, node, stack = [], checked = [])
+		puts "#{node} - zaczynam kod"
+	   #add to the top and remove from the top!
+	    puts "IS STACK EMPTY #{stack.empty?}"
+	    puts "STACK SIZE #{stack.size}"
+
+	    unless stack.empty? && checked.empty? == false
+	      if checked.include?(node)
+	      	puts "#{node} juz byl sprawdzany"
+
+
+			if stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
+				puts "jest lewe jadro i nie bylo sprawdzane"
+		  	  depth_first_search2(target, select_node(stack.last.leftchild), stack, checked)
+
+		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
+		  		puts "jest prawe jadro i nie bylo sprawdzane"
+		  	  depth_first_search2(target, select_node(stack.last.rightchild), stack, checked)
+
+		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
+		  		puts "na lewo i na prawo pusto"
+		  		puts "STACK SIZE #{stack.size}"
+		  	  stack.delete(stack[-1])
+		  	  	puts "IS STACK EMPTY #{stack.empty?}"
+		  	  	puts "STACK SIZE #{stack.size}"
+		  	  depth_first_search2(target, select_node(stack.last.id), stack, checked)
+
+		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
+		  		puts "dzieci sprawdzone po obu stronach"
+		  		puts "STACK SIZE #{stack.size}"
+		  	  stack.delete(stack[-1])
+		  	    puts "IS STACK EMPTY #{stack.empty?}"
+		  	    puts "STACK SIZE #{stack.size}"
+		  	  depth_first_search2(target, select_node(stack.last.id), stack, checked)
+
+		  	end
+
+	      else
+	      	puts "#{node} nie byl sprawdzany"
+	      	stack << node
+	      	puts "STACK = #{stack}"
+	      	checked << stack.last.id
+	      	puts "CHECKED = #{checked}"
+			if stack.last.value == target
+				puts "!!!!!!!!!!!!!!!!!!!!wow #{stack.last.value} to szukana wartosc!"
+			  result = stack.last
+
+			elsif stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
+		  	  puts "jest lewe jadro i nie bylo sprawdzane"
+		  	  depth_first_search2(target, select_node(stack.last.leftchild), stack, checked)
+
+
+		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
+		  		puts "jest prawe jadro i nie bylo sprawdzane"
+		  	  depth_first_search2(target, select_node(stack.last.rightchild), stack, checked)
+
+		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
+		  		puts "na lewo i na prawo pusto"
+		  		puts "STACK SIZE #{stack.size}"
+		  	  stack.delete(stack[-1])
+		  	  puts "IS STACK EMPTY #{stack.empty?}"
+		  	    puts "STACK SIZE #{stack.size}"
+		  	  depth_first_search2(target, select_node(stack.last.id), stack, checked)
+
+		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
+		  		puts "dzieci sprawdzone po obu stronach"
+		  		puts "STACK SIZE #{stack.size}"
+		  	  stack.delete(stack[-1])
+		  	  puts "IS STACK EMPTY #{stack.empty?}"
+		  	    puts "STACK SIZE #{stack.size}"
+		  	  depth_first_search2(target, select_node(stack.last.id), stack, checked)
+
+		  	end
+		  end
+		end
+		puts "IS STACK EMPTY #{stack.empty?}"
+		puts "STACK SIZE #{stack.size}"
+		puts "WYNIK!!!!!!!!!!!!!!!!!!!!"
+		result
 		
 	end
 
@@ -203,8 +285,8 @@ end
 tree = BasicDataStructures::Tree.new("test")
 
 #tree.build_tree([4,3,5,2,2,1,1,24,33,17,13])
-#tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-tree.build_tree([3, 2, 4])
+tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+#tree.build_tree([3, 2, 4])
 puts " "
 print "----------------reading tree----------------------"
 puts " "
@@ -213,6 +295,6 @@ tree.read_tree
 puts " "
 print "----------------stop reading tree-----------------"
 puts " "
-
-puts tree.depth_first_search(4, tree.rootnode)
+puts tree.rootnode
+puts tree.depth_first_search2(6345, tree.rootnode)
 
