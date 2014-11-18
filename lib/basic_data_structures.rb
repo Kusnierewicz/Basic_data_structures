@@ -63,88 +63,41 @@ module BasicDataStructures
 	  #value is not located, return nil.
 
 	end
-=begin
+
 	def depth_first_search(target, node, stack = [], checked = [])
-	  stack << node #add to the top and remove from the top!
-	  left = true
-	  right = true
-	  result = nil
-	  if cheked.include?(stack.last) !=
-	    checked << stack.last
-	    while stack.empty? != true
-		  if stack.last.value == target
-		  	result = stack.last
-		  	stack.clear
-		  elsif stack.last.leftchild == nil && stack.last.rightchild == nil
-		  	left = false
-		  	right = false
-		  else
-		  	if stack.last.leftchild == nil || checked.include?(stack.last.leftchild)
-		  	  left = false
-		  	else
-		  	  depth_first_search(target, stack.last.leftchild, stack, checked)
-		  	end
-		  	  
-		  	if stack.last.rightchild == nil || checked.include?(stack.last.rightchild) == false
-		  	  #if checked.include?(stack.last.rightchild) == false
-		  	  depth_first_search(terget, stack.last.rightchild, stack, checked)
-		  	end
-		  end
-		  	result
-		end
-	  end
-	  
-	  
-
-	  #Build a method depth_first_search which returns the node 
-	  #at which the target value is located using the depth first 
-	  #search technique. Use an array acting as a stack to do this.
-
-	end
-=end
-	def depth_first_search(target, node, stack = [], checked = ["test"])
-	  result = nil
-	    while stack.empty? != true 
-	     #add to the top and remove from the top!
-		puts "stack = #{stack}"
-		puts " "
-		print "----------------1 tree----------------------"
-		puts " "
-		
-		puts "node = #{node.id}"
-		puts " "
-		print "----------------2 tree----------------------"
-		puts " "
-
-		puts "checked = #{checked}"
-		puts " "
-		print "----------------3 tree----------------------"
-		puts " "  
-
+	    if stack.empty? && checked.empty? == false
+	      return result
+	    else
 	      if checked.include?(node)
-	      	puts "node jest w #{checked}"
-
 			if stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
 		  	  depth_first_search(target, select_node(stack.last.leftchild), stack, checked)
 
 		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
 		  	  depth_first_search(target, select_node(stack.last.rightchild), stack, checked)
 
+		  	elsif stack.last.leftchild == nil && checked.include?(stack.last.rightchild)
+		  	  stack.delete(stack[-1])
+		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+
+		  	elsif checked.include?(stack.last.leftchild) && stack.last.rightchild == nil
+		  	  stack.delete(stack[-1])
+		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+
 		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
-		  	  stack.pop
+		  	  stack.delete(stack[-1])
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
 
 		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
-		  	  stack.pop
+		  	  stack.delete(stack[-1])
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+
 		  	end
 
 	      else
-	      	puts "node nie jest w #{checked}"
 	      	stack << node
-	      	puts stack.inspect
-	      	checked << stack.last
+	      	checked << stack.last.id
 			if stack.last.value == target
+			  puts "!!!!!!!!!!!!!!!!!!!!wow #{stack.last.value} to szukana wartosc!"
 			  result = stack.last
 
 			elsif stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
@@ -153,19 +106,25 @@ module BasicDataStructures
 		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
 		  	  depth_first_search(target, select_node(stack.last.rightchild), stack, checked)
 
+		  	elsif stack.last.leftchild == nil && checked.include?(stack.last.rightchild)
+		  	  stack.delete(stack[-1])
+		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+
+		  	elsif checked.include?(stack.last.leftchild) && stack.last.rightchild == nil
+		  	  stack.delete(stack[-1])
+		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+
 		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
-		  	  stack.pop
+		  	  stack.delete(stack[-1])
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
 
 		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
-		  	  stack.pop
+		  	  stack.delete(stack[-1])
 		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
 
 		  	end
 		  end
 		end
-		result.class
-		
 	end
 
 	def dfs(target)
@@ -203,8 +162,8 @@ end
 tree = BasicDataStructures::Tree.new("test")
 
 #tree.build_tree([4,3,5,2,2,1,1,24,33,17,13])
-#tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-tree.build_tree([3, 2, 4])
+tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+#tree.build_tree([3, 2, 4])
 puts " "
 print "----------------reading tree----------------------"
 puts " "
@@ -215,4 +174,8 @@ print "----------------stop reading tree-----------------"
 puts " "
 
 puts tree.depth_first_search(4, tree.rootnode)
+puts tree.depth_first_search(6345, tree.rootnode)
+puts tree.depth_first_search(324, tree.rootnode)
+puts tree.depth_first_search(23, tree.rootnode)
+puts tree.depth_first_search(67, tree.rootnode)
 
