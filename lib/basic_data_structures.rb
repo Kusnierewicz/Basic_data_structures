@@ -58,7 +58,7 @@ module BasicDataStructures
 	  else
 	  	if node.rootnode == true
 	  	  if node.value == target
-	  	    puts "!!!!!!!!!!!!!!!!!!!!wow #{queue.last.value} to szukana wartosc!"
+	  	    puts "Searched value is: #{queue.last.value}!!!"
 	        result = node
 	        return result
 	      else
@@ -77,7 +77,7 @@ module BasicDataStructures
 		  	if node.rightchild != nil && checked.include?(node.rightchild) == false
 		  	  position = select_node(node.rightchild)
 			  if position.value == target
-	  	        puts "!!!!!!!!!!!!!!!!!!!!wow #{position.value} to szukana wartosc!"
+	  	        puts "Searched value is: #{position.value}!!!"
 	  	        result = position
 	            return result
 			  else
@@ -86,13 +86,12 @@ module BasicDataStructures
 	          end
 	        end
 	        breadth_first_search(target, select_node(queue[0]), queue, checked)
-		  	#queue.delete(queue[0])
 		  end
 	    else        
 		  if node.leftchild != nil && checked.include?(node.leftchild) == false
 		    position = select_node(node.leftchild)
 		    if position.value == target
-  	          puts "!!!!!!!!!!!!!!!!!!!!wow #{position.value} to szukana wartosc!"
+  	          puts "Searched value is: #{position.value}!!!"
               result = position
               return result
 		    else
@@ -104,7 +103,7 @@ module BasicDataStructures
 	  	  if node.rightchild != nil && checked.include?(node.rightchild) == false
 	  	    position = select_node(node.rightchild)
 		    if position.value == target
-  	          puts "!!!!!!!!!!!!!!!!!!!!wow #{position.value} to szukana wartosc!"
+  	          puts "Searched value is: #{position.value}!!!"
   	          result = position
               return result
 		    else
@@ -120,32 +119,50 @@ module BasicDataStructures
 	end
 
 	def depth_first_search(target, node, stack = [], checked = [])
+	  stack << node
+	  until stack.empty? && checked.empty? != true
+	  	if checked.include?(stack.last)
+		  if stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
+		  	 stack << select_node(stack.last.rightchild)
+		  else 
+		  	 stack.delete(stack[-1])
+		  end
+		else 
+		  checked << stack.last.id
+		  if stack.last.value == target
+			  puts "Searched value is: #{stack.last.value}!!!"
+			  result = stack.last
+			  return result
+	  	  elsif stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
+		  	 stack << select_node(stack.last.leftchild)
+		  elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
+		  	 stack << select_node(stack.last.rightchild)
+		  else 
+		  	 stack.delete(stack[-1])
+		  end
+		end
+	  end
+	end
+
+	def dfs(target, node, stack = [], checked = [])
 	    if stack.empty? && checked.empty? == false
 
 	      return result
 	    else
 	      if checked.include?(node)
 			if stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
-		  	  depth_first_search(target, select_node(stack.last.leftchild), stack, checked)
+		  	  dfs(target, select_node(stack.last.leftchild), stack, checked)
 
 		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
-		  	  depth_first_search(target, select_node(stack.last.rightchild), stack, checked)
+		  	  dfs(target, select_node(stack.last.rightchild), stack, checked)
 
-		  	elsif stack.last.leftchild == nil && checked.include?(stack.last.rightchild)
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
-
-		  	elsif checked.include?(stack.last.leftchild) && stack.last.rightchild == nil
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
-
-		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
-
-		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+		  	else 
+		  	  stack.delete(stack[-1])
+		  	  if stack.empty?
+		  	   	return result
+		  	  else
+		  	    dfs(target, select_node(stack.last.id), stack, checked)
+		  	  end
 
 		  	end
 
@@ -153,54 +170,26 @@ module BasicDataStructures
 	      	stack << node
 	      	checked << stack.last.id
 			if stack.last.value == target
-			  puts "!!!!!!!!!!!!!!!!!!!!wow #{stack.last.value} to szukana wartosc!"
+			  puts "Searched value is: #{stack.last.value}!!!"
 			  result = stack.last
 
 			elsif stack.last.leftchild != nil && checked.include?(stack.last.leftchild) == false
-		  	  depth_first_search(target, select_node(stack.last.leftchild), stack, checked)
+		  	  dfs(target, select_node(stack.last.leftchild), stack, checked)
 
 		  	elsif stack.last.rightchild != nil && checked.include?(stack.last.rightchild) == false
-		  	  depth_first_search(target, select_node(stack.last.rightchild), stack, checked)
+		  	  dfs(target, select_node(stack.last.rightchild), stack, checked)
 
-		  	elsif stack.last.leftchild == nil && checked.include?(stack.last.rightchild)
-		  	  puts "#{stack.inspect}"
-		  	  puts "#{stack.size}"
-		  	  puts "#{stack.last.id}"
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
-
-		  	elsif checked.include?(stack.last.leftchild) && stack.last.rightchild == nil
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
-
-		  	elsif stack.last.leftchild == nil && stack.last.rightchild == nil
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
-
-		  	elsif checked.include?(stack.last.leftchild) && checked.include?(stack.last.rightchild)
-		  	  stack.size > 1 ? stack.delete(stack[-1]) : (return result)
-		  	  depth_first_search(target, select_node(stack.last.id), stack, checked)
+		  	else
+			  stack.delete(stack[-1])
+		  	  if stack.empty?
+		  	   	return result
+		  	  else
+		  	    dfs(target, select_node(stack.last.id), stack, checked)
+		  	  end
 
 		  	end
 		  end
 		end
-	end
-
-	def dfs(target)
-	  #Next, build a new method dfs_rec which runs a depth first 
-	  #search as before but this time, instead of using a stack, 
-	  #make this method recursive.
-	  #
-	  #Tips:
-	  #You can think of the dfs_rec method as a little robot that 
-	  #crawls down the tree, checking if a node is the correct 
-	  #node and spawning other little robots to keep searching the 
-	  #tree. No robot is allowed to turn on, though, until all the 
-	  #robots to its left have finished their task.
-	  #
-	  #The method will need to take in both the target value and 
-	  #the current node to compare against.
-
 	end
 
 	def rootnode
@@ -220,9 +209,8 @@ end
 
 tree = BasicDataStructures::Tree.new("test")
 
-#tree.build_tree([4,3,5,2,2,1,1,24,33,17,13])
 tree.build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-#tree.build_tree([3, 2, 4, 1, 5, 6, 8, 4])
+
 puts " "
 print "----------------reading tree----------------------"
 puts " "
@@ -232,10 +220,25 @@ puts " "
 print "----------------stop reading tree-----------------"
 puts " "
 
-#puts tree.breadth_first_search(6345, tree.rootnode)
 puts tree.depth_first_search(100, tree.rootnode)
-#puts tree.depth_first_search(6345, tree.rootnode)
-#puts tree.depth_first_search(324, tree.rootnode)
-#puts tree.depth_first_search(23, tree.rootnode)
-#puts tree.depth_first_search(67, tree.rootnode)
+puts tree.depth_first_search(6345, tree.rootnode)
+puts tree.depth_first_search(324, tree.rootnode)
+puts tree.depth_first_search(23, tree.rootnode)
+puts tree.depth_first_search(8, tree.rootnode)
+
+print "----------------stop reading tree-----------------"
+
+puts tree.breadth_first_search(100, tree.rootnode)
+puts tree.breadth_first_search(6345, tree.rootnode)
+puts tree.breadth_first_search(324, tree.rootnode)
+puts tree.breadth_first_search(23, tree.rootnode)
+puts tree.breadth_first_search(8, tree.rootnode)
+
+print "----------------stop reading tree-----------------"
+
+puts tree.dfs(100, tree.rootnode)
+puts tree.dfs(6345, tree.rootnode)
+puts tree.dfs(324, tree.rootnode)
+puts tree.dfs(23, tree.rootnode)
+puts tree.dfs(8, tree.rootnode)
 
